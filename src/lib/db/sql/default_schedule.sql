@@ -1,0 +1,7 @@
+-- Script to fix default schedule
+
+
+CREATE TABLE DEFAULT_SCHEDULE 	( TEAM_ID    INT          NOT NULL REFERENCES TEAM(TEAM_ID),
+				  DAY        VARCHAR(9)   NOT NULL REFERENCES DAY(DAY_ID),
+				  EMP_LIST   VARCHAR(256) NOT NULL
+				); 
