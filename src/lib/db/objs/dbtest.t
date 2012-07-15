@@ -3,7 +3,8 @@ use CompanyDB;
 use TeamDB;
 use DefaultScheduleDB;
 use DayDB;
-use Test::Simple tests => 9;
+use OverrideScheduleDB;
+use Test::Simple tests => 10;
 
 # Create a connection
 print "Test New connection \n";
@@ -33,11 +34,12 @@ my $where = ( NAME => 'Test',
               ADDRESS_ZIP => '625016'
             );
 
-my $select_fields = [qw(NAME ADDRESS_CITY)]; 
+my $select_fields = '';
+#my $select_fields = [qw(NAME ADDRESS_CITY)]; 
 $result = $company->select(\%where, $select_fields);
 while($arr = $result->fetch) {
-  ok ($arr->[0] eq 'Test', 'Select succeeded ');
-  ok ($arr->[1] eq 'Madurai', 'Select succeeded ');
+  ok ($arr->[1] eq 'Test', 'Select succeeded ');
+  ok ($arr->[4] eq 'Madurai', 'Select succeeded ');
 }
 
 # Test Update
@@ -50,10 +52,11 @@ $result = $company->update(\%update_fields, \%where);
 ok($result->rows > 0, 'Successful Update');
 
 # Test Delete
+=head
 my %del_row = ( NAME => 'Test');
 $result = $company->delete(\%del_row);
 ok($result->rows > 0,"Deleted row successfully");
-
+=cut
 print "\nFor other tables, just check if objects are created as other methods are same \n\n";
 
 my $team = TeamDB->new($new);
@@ -68,3 +71,6 @@ my $day = DayDB->new($new);
 $tname = $day->table_name();
 ok($tname eq 'DAY', 'Day table object created');
 
+my $override_schedule = OverrideScheduleDB->new($new);
+$tname = $override_schedule->table_name();
+ok($tname eq 'OVERRIDE_SCHEDULE', 'Override table created');

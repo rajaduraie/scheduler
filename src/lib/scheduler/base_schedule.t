@@ -12,5 +12,9 @@ my %no_of_emps = (	'mon' => 15,
 			'sun' => 7,
 		);
 
-BaseScheduler::create_initial_schedule(undef, \%no_of_emps);
+my %params = ( company_id => '1049',
+               team_id => '10'
+             );
+my $obj = BaseScheduler->new(\%params);
+BaseScheduler::create_initial_schedule($obj, $params{company_id}, \%no_of_emps);
 

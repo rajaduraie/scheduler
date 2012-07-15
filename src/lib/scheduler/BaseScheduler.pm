@@ -13,10 +13,16 @@ use DayDB;
 use DefaultScheduleDB;
 
 sub new {
-  my($class) = @_;
+  my($class, $params) = @_;
   my $self = {};
   my $connection = Connection->new();
   $self->{db} = $connection;
+  my $company_id = $params->{company_id};
+  my $team_id = $params->{team_id};
+  my $company = CompanyDB->new($connection);
+  my $team = TeamDB->new($connection);
+  $self->{company} = $company;   
+  $self->{team} = $team;
   bless $self, $class;
   return $self;
 }
@@ -81,6 +87,7 @@ sub create_employee_list {
       }
     }
   }
+  return (\%em,\%new_days);
 }
 
 sub create_initial_schedule {
@@ -109,7 +116,7 @@ sub create_initial_schedule {
                         	EMP_LIST => $day_list
 		        );
     my $result = $default_schedule->create(\%schedule_data);
-    if($result->dummy) {
+    if(!$result) {
       $result = $default_schedule->delete({TEAM_ID => $team_id});
       croak "Failed DB insert";
     }
