@@ -7,6 +7,6 @@ make_schema_at (
   'Robots::Schema', 
   {debug => 0, dump_directory => '.',
   generate_pod => 0,  },
-  ['dbi:mysql:robodb:localhost:3306', 'root', 'Havefun!']
+  ['dbi:mysql:robodb:localhost:3306', 'root', 'password!']
 );
  
